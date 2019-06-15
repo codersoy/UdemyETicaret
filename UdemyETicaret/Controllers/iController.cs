@@ -15,16 +15,16 @@ namespace UdemyETicaret.Controllers
             context = new ETicaretEntities();
         }
         // GET: i
-        public ActionResult Index(int id)
+        public ActionResult Index(int? id)
         {
 
             IQueryable<DB.Products> products = context.Products;
             DB.Categories category = null;
 
-            if (id == 0)
+            if (id.HasValue)
             {
-                products = products;
-                category = category;
+                products = products.Where(x=>x.Category_Id == id);
+                category = context.Categories.FirstOrDefault(x => x.Id == id);
             }
            
             var viewModel = new Models.i.IndexModel()
