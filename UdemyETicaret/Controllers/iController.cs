@@ -7,15 +7,11 @@ using UdemyETicaret.DB;
 
 namespace UdemyETicaret.Controllers
 {
-    public class iController : Controller
+    public class iController : BaseController
     {
-        ETicaretEntities context;
-        public iController()
-        {
-            context = new ETicaretEntities();
-        }
+       
         // GET: i
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id )
         {
 
             IQueryable<DB.Products> products = context.Products;
