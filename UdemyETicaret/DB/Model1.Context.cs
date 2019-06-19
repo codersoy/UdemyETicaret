@@ -13,10 +13,10 @@ namespace UdemyETicaret.DB
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ETicaretEntities : DbContext
+    public partial class UdemyETicaretDBEntities1 : DbContext
     {
-        public ETicaretEntities()
-            : base("name=ETicaretEntities")
+        public UdemyETicaretDBEntities1()
+            : base("name=UdemyETicaretDBEntities1")
         {
         }
     
@@ -26,6 +26,7 @@ namespace UdemyETicaret.DB
         }
     
         public virtual DbSet<Addresses> Addresses { get; set; }
+        public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Comments> Comments { get; set; }
         public virtual DbSet<Members> Members { get; set; }
         public virtual DbSet<MessageReplies> MessageReplies { get; set; }
@@ -33,6 +34,5 @@ namespace UdemyETicaret.DB
         public virtual DbSet<OrderDetails> OrderDetails { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
-        public virtual DbSet<Categories> Categories { get; set; }
     }
 }

@@ -9,13 +9,29 @@ namespace UdemyETicaret.Controllers
 {
     public class BaseController : Controller
     {
-        protected ETicaretEntities context { get; private set; }
+        protected UdemyETicaretDBEntities1 context { get; private set; }
 
         public BaseController()
         {
-            context = new ETicaretEntities();
+            context = new UdemyETicaretDBEntities1();
             ViewBag.MenuCategories = context.Categories.Where(x => x.Parent_Id == null).ToList();
         }
-        
+        protected DB.Members CurrentUser()
+        {
+            if (Session["LogOnUser"] == null)
+            {
+                return null;
+            }
+            return (DB.Members)Session["LogOnUser"];
+        }
+        protected int CurrentUserId()
+        {
+            if (Session["LogOnUser"] == null)
+            {
+                return 0;
+            }
+            return ((DB.Members)Session["LogOnUser"]).Id;
+        }
+
     }
 }

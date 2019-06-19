@@ -11,10 +11,10 @@ namespace UdemyETicaret.DB
 {
     using System;
     
-    public enum MemberTypes : int
+    public enum MemberType : int
     {
+        Admin = 10,
         Customer = 0,
-        Editor = 8,
-        Admin = 10
+        Editor = 8
     }
 }

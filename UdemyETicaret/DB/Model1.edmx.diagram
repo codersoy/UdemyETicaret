@@ -4,8 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="23400e9a91504b0da0efc3a25381b5dd" Name="Diagram1">
+      <Diagram DiagramId="c9f2bc40c661478b878fb66e858c65cc" Name="Diagram1">
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Addresses" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="UdemyETicaretDBModel.Categories" Width="1.5" PointX="1.5" PointY="18.375" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Comments" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Members" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.MessageReplies" Width="1.5" PointX="6" PointY="6.375" IsExpanded="true" />
@@ -14,6 +15,8 @@
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Orders" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Products" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_Addresses_Members" ManuallyRouted="false" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_Categories_Categories" ManuallyRouted="false" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_Products_Categories" ManuallyRouted="false" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_Comments_Members" ManuallyRouted="false" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_Comments_Products" ManuallyRouted="false" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_MessageReplies_Members" ManuallyRouted="false" />
@@ -21,9 +24,6 @@
         <AssociationConnector Association="UdemyETicaretDBModel.FK_MessageReplies_Messages" ManuallyRouted="false" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_OrderDetails_Orders" ManuallyRouted="false" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_OrderDetails_Products" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="UdemyETicaretDBModel.Categories" Width="1.5" PointX="0.75" PointY="16.375" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_Categories_Categories" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_Products_Categories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

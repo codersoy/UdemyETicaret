@@ -29,23 +29,23 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.Member.Name, new { @class = "form-control", placeholder = "Lütfen isminizi giriniz.", type = "text" })
+                        @Html.TextBoxFor(model => model.Member.Name, new { @class = "form-control", placeholder = "Lütfen isminizi giriniz.", type = "text", required = "required" })
                     </div>
 
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.Member.Surname, new { @class = "form-control", placeholder = "Lütfen soyisminizi yazınız.", type = "text" })
+                        @Html.TextBoxFor(model => model.Member.Surname, new { @class = "form-control", placeholder = "Lütfen soyisminizi yazınız.", type = "text", required = "required" })
                     </div>
 
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.Member.Email, new { @class = "form-control", placeholder = "Lütfen e-posta adresinizi yazınız.", type = "email" })
+                        @Html.TextBoxFor(model => model.Member.Email, new { @class = "form-control", placeholder = "Lütfen e-posta adresinizi yazınız.", type = "email", required = "required" })
                     </div>
 
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.Member.Password, new { @class = "form-control", placeholder = "Lütfen şifrenizi yazınız.", type = "password" })
+                        @Html.TextBoxFor(model => model.Member.Password, new { @class = "form-control", placeholder = "Lütfen şifrenizi yazınız.", type = "password", required = "required" })
                     </div>
 
                     <div class="form-group">
-                        @Html.TextBoxFor(model => model.rePassword, new { @class = "form-control", placeholder = "Lütfen şifrenizi tekrar yazınız.", type = "password" })
+                        @Html.TextBoxFor(model => model.rePassword, new { @class = "form-control", placeholder = "Lütfen şifrenizi tekrar yazınız.", type = "password", required = "required" })
                     </div>
 
                 </div>

@@ -1,0 +1,9 @@
+﻿@model UdemyETicaret.Models.i.ProductModels
+@{
+    ViewBag.Title = "Product";
+}
+
+@Html.Partial("_Product", Model.Product)
+@Html.Partial("_AddCart", Model.Product)
+@Html.Partial("_Comment", new UdemyETicaret.Models.i.CommentModels() { Comments = Model.Comment, Product = Model.Product})
+
