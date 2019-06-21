@@ -16,7 +16,7 @@ namespace UdemyETicaret.Controllers
         public ActionResult Index(int? id)
         {
 
-            IQueryable<DB.Products> products = context.Products;
+            IQueryable<DB.Products> products = context.Products.OrderByDescending(x=>x.AddedDate).Where(x => x.isDeleted == false || x.isDeleted == null);
             DB.Categories category = null;
 
             if (id.HasValue)
@@ -204,7 +204,7 @@ namespace UdemyETicaret.Controllers
                     //byModel.Member = item.Members;
                     model.Add(byModel);
                 }
-                
+
                 return View(model);
             }
             else
@@ -265,7 +265,7 @@ namespace UdemyETicaret.Controllers
                 {
                     TempData["MyError"] = ex.Message;
                 }
-                return RedirectToAction("Buy","i");
+                return RedirectToAction("Buy", "i");
             }
             else
             {
@@ -277,13 +277,13 @@ namespace UdemyETicaret.Controllers
         [HttpPost]
         public JsonResult OrderNotif(OrderNotifModels model)
         {
-            if (string.IsNullOrEmpty(model.OrderId)==false)
+            if (string.IsNullOrEmpty(model.OrderId) == false)
             {
                 var guid = new Guid(model.OrderId);
                 var order = context.Orders.FirstOrDefault(x => x.Id == guid);
-                if (order!= null)
+                if (order != null)
                 {
-                    order.Description= model.OrderDescription;
+                    order.Description = model.OrderDescription;
                     order.Status = "OB";
                     context.SaveChanges();
                 }
@@ -295,7 +295,7 @@ namespace UdemyETicaret.Controllers
         public JsonResult GetProduct(int id)
         {
             var pro = context.Products.FirstOrDefault(x => x.Id == id);
-            return Json(pro.Description,JsonRequestBehavior.AllowGet);
+            return Json(pro.Description, JsonRequestBehavior.AllowGet);
         }
     }
 }

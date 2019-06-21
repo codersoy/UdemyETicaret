@@ -147,11 +147,11 @@ namespace UdemyETicaret.Controllers
                     var file = Request.Files[0];
                     if (file.ContentLength > 0)
                     {
-                        var folder = Server.MapPath("~/images/upload");
+                        var folder = Server.MapPath("~/images/upload/Account");
                         var fileName = Guid.NewGuid() + ".jpg";
                         file.SaveAs(Path.Combine(folder, fileName));
 
-                        var filePath = "images/upload/" + fileName;
+                        var filePath = "images/upload/Account/" + fileName;
                         updateMember.ProfileImageName = filePath;
                     }
                 }

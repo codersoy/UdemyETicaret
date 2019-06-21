@@ -21,7 +21,7 @@ namespace UdemyETicaret.DB
         public System.DateTime AddedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
     
-        public virtual Products Products { get; set; }
         public virtual Members Members { get; set; }
+        public virtual Products Products { get; set; }
     }
 }

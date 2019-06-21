@@ -5,15 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="c9f2bc40c661478b878fb66e858c65cc" Name="Diagram1">
-        <EntityTypeShape EntityType="UdemyETicaretDBModel.Categories" Width="1.5" PointX="1.5" PointY="18.375" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Comments" Width="1.5" PointX="3" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.MessageReplies" Width="1.5" PointX="6" PointY="6.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="UdemyETicaretDBModel.OrderDetails" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="UdemyETicaretDBModel.Products" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_Categories_Categories" ManuallyRouted="false" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_Products_Categories" ManuallyRouted="false" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_Comments_Products" ManuallyRouted="false" />
-        <AssociationConnector Association="UdemyETicaretDBModel.FK_OrderDetails_Products" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="UdemyETicaretDBModel.OrderDetails" Width="1.5" PointX="5.5" PointY="12.25" IsExpanded="true" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Addresses" Width="1.5" PointX="3" PointY="4.5" />
         <EntityTypeShape EntityType="UdemyETicaretDBModel.Orders" Width="1.5" PointX="3" PointY="12.375" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_OrderDetails_Orders" />
@@ -25,6 +19,12 @@
         <AssociationConnector Association="UdemyETicaretDBModel.FK_Messages_Members" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_Orders_Members" />
         <AssociationConnector Association="UdemyETicaretDBModel.FK_MessageReplies_Messages" />
+        <EntityTypeShape EntityType="UdemyETicaretDBModel.Products" Width="1.5" PointX="0.5" PointY="12.75" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_Comments_Products" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_OrderDetails_Products" />
+        <EntityTypeShape EntityType="UdemyETicaretDBModel.Categories" Width="1.5" PointX="1.25" PointY="18.375" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_Categories_Categories" />
+        <AssociationConnector Association="UdemyETicaretDBModel.FK_Products_Categories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
