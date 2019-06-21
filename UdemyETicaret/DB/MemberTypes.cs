@@ -10,17 +10,11 @@
 namespace UdemyETicaret.DB
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Addresses
+    public enum MemberTypes : int
     {
-        public System.Guid Id { get; set; }
-        public string AdresDescription { get; set; }
-        public int Member_Id { get; set; }
-        public System.DateTime AddedDate { get; set; }
-        public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public string Name { get; set; }
-    
-        public virtual Members Members { get; set; }
+        Editor = 8,
+        Admin = 10,
+        Customer = 0
     }
 }

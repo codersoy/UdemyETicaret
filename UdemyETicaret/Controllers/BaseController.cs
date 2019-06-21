@@ -33,5 +33,17 @@ namespace UdemyETicaret.Controllers
             return ((DB.Members)Session["LogOnUser"]).Id;
         }
 
+        protected bool IsLogon()
+        {
+            if (Session["LogOnUser"] == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }

@@ -178,6 +178,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\iController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="DB\Addresses.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -191,6 +192,9 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\MemberType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\MemberTypes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DB\MessageReplies.cs">
@@ -229,10 +233,18 @@
     <Compile Include="Models\Account\LoginModels.cs" />
     <Compile Include="Models\Account\ProfileModels.cs" />
     <Compile Include="Models\Account\RegisterModels.cs" />
+    <Compile Include="Models\BasketModels.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\i\BuyModels.cs" />
     <Compile Include="Models\i\CommentModels.cs" />
     <Compile Include="Models\i\IndexModel.cs" />
+    <Compile Include="Models\i\i_BasketModels.cs" />
+    <Compile Include="Models\i\OrderNotifModels.cs" />
     <Compile Include="Models\i\ProductModels.cs" />
+    <Compile Include="Models\Message\IndexModels.cs" />
+    <Compile Include="Models\Message\MessageRepliesModels.cs" />
+    <Compile Include="Models\Message\RenderMessageModel.cs" />
+    <Compile Include="Models\Message\SendMessageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +260,11 @@
     <Content Include="Views\Shared\_Comment.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\ProfileEdit.cshtml" />
+    <Content Include="Views\i\Basket.cshtml" />
+    <Content Include="Views\i\Buy.cshtml" />
+    <Content Include="Views\Message\Index.cshtml" />
+    <Content Include="Views\Message\MessageReplies.cshtml" />
+    <Content Include="Views\Shared\_Message.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -23,9 +23,11 @@ namespace UdemyETicaret.DB
         public System.Guid Id { get; set; }
         public string Subject { get; set; }
         public bool IsRead { get; set; }
-        public string AddedDate { get; set; }
-        public string ModifiedDate { get; set; }
+        public System.DateTime AddedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
+        public int ToMemberId { get; set; }
     
+        public virtual Members Members { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MessageReplies> MessageReplies { get; set; }
     }

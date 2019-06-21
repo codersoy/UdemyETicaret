@@ -40,7 +40,7 @@
         <div class="form-group">
             <label class="col-md-2 text-danger">Hakkında : </label>
             <label class="col-md-10">
-               &nbsp; @Model.Members.Bio
+                &nbsp; @Model.Members.Bio
             </label>
         </div>
 
@@ -67,6 +67,64 @@
             &nbsp;
         </div>
     </div>
+
+    if (Model.Addresses != null)
+    {
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-8">
+                <table class="table table-condensed table-striped table-hover text-center">
+
+                    <thead>
+                        <tr>
+                            <th class="text-center">Adres Adı</th>
+                            <th class="text-center" width="100"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Addresses)
+                        {
+                            <tr>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a href="~/Account/Profile?ad=@item.Id.ToString()" class="btn btn-info btn-xs">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </a>
+                                    <a href="~/Account/RemoveAddress/@item.Id.ToString()" class="btn btn-danger btn-xs">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                @using (Html.BeginForm("Address", "Account"))
+                {
+                    @Html.Hidden("Id", Model.CurrentAddress.Id.ToString())
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="textinput">Adres Adı</label>
+                        @Html.TextBox("Name", Model.CurrentAddress.Name, new { @class = "form-control col-sm-10", placeholder = "Örnek: Evim, İş yeri, vb." })
+                    </div>
+                    <div class="form-group">
+                        <label style="margin-top:10px;" class="col-sm-2 control-label" for="textinput">Adres</label>
+                        @Html.TextArea("AdresDescription", Model.CurrentAddress.AdresDescription, new { @class = "form-control col-sm-10",style ="height:120px; width:754px;", placeholder = "Mahalle, sokak, cadde ve diğer bilgileri giriniz" })
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10" style="margin-top:20px;">
+                            <div class="pull-right">
+                                <button type="submit" name="Cancel" value="Cancel" class="btn btn-default">Vazgeç</button>
+                                <button type="submit" name="Save" value="Save" class="btn btn-info">Kaydet</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 }
 
 

@@ -12,12 +12,11 @@ namespace UdemyETicaret.Controllers
     public class AccountController : BaseController
     {
 
-        // GET: Account
+        [HttpGet]
         public ActionResult Register()
         {
             return View();
         }
-
 
         [HttpPost]
         public ActionResult Register(Models.Account.RegisterModels user)
@@ -32,7 +31,7 @@ namespace UdemyETicaret.Controllers
                 {
                     throw new Exception("Bu e-posta adresine kayıtlı kullanıcı var.");
                 }
-                user.Member.MemberType = DB.MemberType.Customer;
+                user.Member.MemberType = DB.MemberTypes.Customer;
                 user.Member.AddedDate = DateTime.Now;
                 context.Members.Add(user.Member);
                 context.SaveChanges();
@@ -45,6 +44,7 @@ namespace UdemyETicaret.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Login()
         {
             return View();
@@ -74,17 +74,27 @@ namespace UdemyETicaret.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult Logout()
         {
             Session["LogOnUser"] = null;
             return RedirectToAction("Login", "Account");
         }
 
-        public ActionResult Profile(int id = 0)
+        [HttpGet]
+        public ActionResult Profile(int id = 0, string ad = "")
         {
+            List<DB.Addresses> adresses = null;
+            DB.Addresses currentAdres = new DB.Addresses();
             if (id == 0)
             {
                 id = base.CurrentUserId();
+                adresses = context.Addresses.Where(x => x.Member_Id == id).ToList();
+                if (string.IsNullOrEmpty(ad) == false)
+                {
+                    var guid = new Guid(ad);
+                    currentAdres = context.Addresses.FirstOrDefault(x => x.Id == guid);
+                }
             }
             var user = context.Members.FirstOrDefault(x => x.Id == id);
             if (user == null)
@@ -93,7 +103,9 @@ namespace UdemyETicaret.Controllers
             }
             ProfileModels model = new ProfileModels()
             {
-                Members = user
+                Members = user,
+                Addresses = adresses,
+                CurrentAddress = currentAdres
             };
             return View(model);
         }
@@ -159,5 +171,40 @@ namespace UdemyETicaret.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Address(DB.Addresses address, string Cancel)
+        {
+            if (!string.IsNullOrEmpty(Cancel))
+            {
+                return RedirectToAction("Profile", "Account");
+            }
+            DB.Addresses _address = null;
+            if (address.Id == Guid.Empty)
+            {
+                address.Id = Guid.NewGuid();
+                address.AddedDate = DateTime.Now;
+                address.Member_Id = base.CurrentUserId();
+                context.Addresses.Add(address);
+            }
+            else
+            {
+                _address = context.Addresses.FirstOrDefault(x => x.Id == address.Id);
+                _address.ModifiedDate = DateTime.Now; context.SaveChanges();
+                _address.Name = address.Name;
+                _address.AdresDescription = address.AdresDescription;
+            }
+            context.SaveChanges();
+            return RedirectToAction("Profile", "Account");
+        }
+
+        [HttpGet]
+        public ActionResult RemoveAddress(string id)
+        {
+            var guid = new Guid(id);
+            var address = context.Addresses.FirstOrDefault(x => x.Id == guid);
+            context.Addresses.Remove(address);
+            context.SaveChanges();
+            return RedirectToAction("Profile", "Account");
+        }
     }
 }

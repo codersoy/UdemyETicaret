@@ -10,12 +10,16 @@
             <h3>@Model.Name</h3>
             @*<p>@Model.Description</p>*@
             <p>
-                <a href="cart.html" class="btn btn-success">
-                    <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;Sepete Ekle
-                </a>
-                <a href="#" data-toggle="modal" data-target="#productinfo" class="btn btn-info">
+                @if (Model.UnitsInStock > 0)
+                {
+                    <a href="~/i/AddBasket/@Model.Id" class="btn btn-success">
+                        <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;Sepete Ekle
+                    </a>
+                }
+
+                <button onclick="GetProductInfo(@Model.Id)" class="btn btn-info">
                     <span class="glyphicon glyphicon-info-sign"></span>&nbsp;Bilgi
-                </a>
+                </button>
             </p>
         </div>
     </div>
