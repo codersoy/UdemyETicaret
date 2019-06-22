@@ -178,30 +178,27 @@ namespace UdemyETicaret.Controllers
             {
                 var currentId = CurrentUserId();
 
-                ////Ekleme yapıldı KONTROL ET
-                //IQueryable<DB.Orders> orders;
-                //if (((int)CurrentUser().MemberType) > 8)
-                //{
-                //    orders = context.Orders.Where(x => x.Status == "OB");
-                //}
-                //else
-                //{
-                //    orders = context.Orders.Where(x => x.Member_Id == currentId);
-                //}
-                //// EKLEME SONU 
-
-
-                var order = context.Orders.Where(x => x.Member_Id == currentId);
-
+                //Ekleme yapıldı KONTROL ET
+                IQueryable<DB.Orders> orders;
+                if (((int)CurrentUser().MemberType) > 8)
+                {
+                    orders = context.Orders.Where(x => x.Status == "OB");
+                }
+                else
+                {
+                    orders = context.Orders.Where(x => x.Member_Id == currentId);
+                }
+                // EKLEME SONU 
+                
                 List<BuyModels> model = new List<BuyModels>();
-                foreach (var item in order)
+                foreach (var item in orders)
                 {
                     var byModel = new BuyModels();
                     byModel.TotalPrice = item.OrderDetails.Sum(y => y.Price);
                     byModel.OrderName = string.Join(",", item.OrderDetails.Select(y => y.Products.Name + "(" + y.Quantity + ")"));
                     byModel.OrderStatus = item.Status;
                     byModel.OrderId = item.Id.ToString();
-                    //byModel.Member = item.Members;
+                    byModel.Member = item.Members;
                     model.Add(byModel);
                 }
 
@@ -291,11 +288,32 @@ namespace UdemyETicaret.Controllers
             return Json("");
         }
 
-        [HttpGet]
+        [HttpGet]      //Product Controller a taşıyabilirsin
         public JsonResult GetProduct(int id)
         {
             var pro = context.Products.FirstOrDefault(x => x.Id == id);
             return Json(pro.Description, JsonRequestBehavior.AllowGet);
+        }
+         
+        [HttpGet]      //Order controllerı açarsan taşıyabilirsin
+        public JsonResult GetOrder(string id)
+        {
+            var guid = new Guid(id);
+            var order = context.Orders.FirstOrDefault(x => x.Id == guid);
+
+            return Json(order.Description ,JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        public JsonResult OrderComplete(string id, string text)
+        {
+            var guid = new Guid(id);
+            var order = context.Orders.FirstOrDefault(x => x.Id == guid);
+            order.Description = text;
+            order.Status = "OO";
+            context.SaveChanges();
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
 }

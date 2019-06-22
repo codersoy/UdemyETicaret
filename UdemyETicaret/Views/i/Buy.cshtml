@@ -1,6 +1,8 @@
 ﻿@model List<UdemyETicaret.Models.i.BuyModels>
 @{
     ViewBag.Title = "Siparişleriniz";
+    var currentUser = (UdemyETicaret.DB.Members)Session["LogonUser"];
+    var currentUserType = (int)currentUser.MemberType;
 }
 
 <h2>Sipariş Sayfası</h2>
@@ -10,8 +12,13 @@
 <table class="table table-condensed table-striped table-hover text-center">
     <thead>
         <tr>
+            @if (currentUserType > 8)
+            {
+                <th class="text-center">Müşteri</th>
+            }
             <th class="text-center">Sipariş</th>
             <th class="text-center">Fiyat</th>
+            <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>
@@ -19,6 +26,12 @@
         @foreach (UdemyETicaret.Models.i.BuyModels item in Model)
         {
             <tr>
+                @if (currentUserType > 8)
+                {
+                    <td>
+                        <a href="~/Account/Profile/@item.Member.Id" target="_blank">@item.Member.Name @item.Member.Surname</a>
+                    </td>
+                }
                 <td>@item.OrderName</td>
                 <td>@item.TotalPrice</td>
                 <td>
@@ -38,6 +51,11 @@
                         <span>Ödeme Onaylandı</span>
                     }
 
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info" onclick="ShowDes('@item.OrderId')">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                    </button>
                 </td>
             </tr>
         }
@@ -66,7 +84,68 @@
     </div>
 </div>
 
+<div class="modal fade" id="orderStatusinfo" tabindex="-1" role="dialog" aria-labelledby="productinfo-label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="productinfo-label">Sipariş Durumu</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="orderStatusId" value="" />
+                <textarea id="orderStatusDes" rows="5" class="form-control" @(currentUserType < 4 ? "readonly=\"readonly\"" : "")></textarea>
+                <span>
+                    <strong>Adres</strong>
+                    <p id="orderAddress"></p>
+                </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                @if (currentUserType > 3)
+                {
+                    <button type="button" id="btnSiparisTamamla" class="btn btn-success">
+                        <span class="glyphicon glyphicon-bell"></span>&nbsp;Siparisi Tamamla
+                    </button>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+
+    function ShowDes(orderId) {
+        $.ajax({
+            url: "/i/GetOrder/" + orderId,
+            method: "GET",
+            async: true,
+            success: function (data) {
+                $("#orderStatusinfo").modal("show");
+                $("#orderStatusId").val(orderId);
+                $("#orderStatusDes").val(data.Description);
+                $("#orderAddress").text(data.Address);
+            },
+            error: function (err) {
+                console.log("Hata", err);
+            }
+        });
+    }
+    $("#btnSiparisTamamla").click(function () {
+        $.ajax({
+            url: "/i/OrderComplete/" + $("#orderStatusId").val(),
+            method: "POST",
+            data: { text: $("#orderStatusDes").val() },
+            async: true,
+            success: function (data) {
+                location.reload();
+            },
+            error: function (err) {
+                console.log("Hata", err);
+            }
+        });
+    });
+
     function OpenModal(orderId) {
         $("#orderinfo").modal("show");
         $("#orderId").val(orderId);
@@ -86,8 +165,10 @@
                 location.reload();
             },
             error: function (err) {
-                consoleçlog("Hata", err);
+                console.log("Hata", err);
             }
         });
     });
+
+
 </script>

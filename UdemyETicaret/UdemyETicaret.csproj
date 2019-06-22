@@ -247,6 +247,7 @@
     <Compile Include="Models\Message\MessageRepliesModels.cs" />
     <Compile Include="Models\Message\RenderMessageModel.cs" />
     <Compile Include="Models\Message\SendMessageModel.cs" />
+    <Compile Include="MyMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +272,7 @@
     <Content Include="Views\Product\Edit.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

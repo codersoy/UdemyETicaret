@@ -206,5 +206,31 @@ namespace UdemyETicaret.Controllers
             context.SaveChanges();
             return RedirectToAction("Profile", "Account");
         }
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(string email)
+        {
+            var member = context.Members.FirstOrDefault(X => X.Email == email);
+            if (member == null)
+            {
+                ViewBag.MyError = "Böyle bir hesap bulunamadı.";
+                return View();
+            }
+            else
+            {
+                var body = "Şifreniz : " + member.Password;
+                MyMail mail = new MyMail(member.Email, "Şifremi Unuttum",body);
+                mail.SendMail();
+                TempData["Info"] = email + "mail adresinize şifreniz gönderilmiştir.";
+                return RedirectToAction("Login", "Account");
+            }
+           
+        }
     }
 }

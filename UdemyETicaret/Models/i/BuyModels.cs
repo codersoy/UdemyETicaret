@@ -11,5 +11,7 @@ namespace UdemyETicaret.Models.i
         public string OrderName { get; set; }
         public decimal TotalPrice { get; set; }
         public string OrderStatus { get; set; }
+        public DB.Members Member { get; set; }
+
     }
 }
