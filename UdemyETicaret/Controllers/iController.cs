@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using UdemyETicaret.DB;
+using UdemyETicaret.Filter;
 using UdemyETicaret.Models;
 using UdemyETicaret.Models.i;
 
@@ -16,13 +17,19 @@ namespace UdemyETicaret.Controllers
         public ActionResult Index(int? id)
         {
 
-            IQueryable<DB.Products> products = context.Products.OrderByDescending(x=>x.AddedDate).Where(x => x.isDeleted == false || x.isDeleted == null);
+            IQueryable<DB.Products> products = context.Products.OrderByDescending(x => x.AddedDate).Where(x => x.isDeleted == false || x.isDeleted == null);
             DB.Categories category = null;
 
             if (id.HasValue)
             {
-                products = products.Where(x => x.Category_Id == id);
                 category = context.Categories.FirstOrDefault(x => x.Id == id);
+                var allCategories = GetChildCategories(category);
+                allCategories.Add(category);
+
+                var catIntList = allCategories.Select(x => x.Id).ToList();
+
+                //select * from Product where Category_Id in (catIntList)
+                products = products.Where(x => catIntList.Contains(x.Category_Id));
             }
 
             var viewModel = new Models.i.IndexModel()
@@ -51,6 +58,7 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpPost]
+        [MyAuthorization]
         public ActionResult Product(DB.Comments comment)
         {
             try
@@ -95,14 +103,14 @@ namespace UdemyETicaret.Controllers
                     }
                     else
                     {
-                        TempData["MyError"] = "Yeterli stok yok";
+                        TempData["MyError"] = "Yeterli Stok yok";
                     }
                 }
+
             }
             else
             {
                 var pro = context.Products.FirstOrDefault(x => x.Id == id);
-
                 if (pro != null && pro.IsContinued && pro.UnitsInStock > 0)
                 {
                     basket.Add(new i_BasketModels()
@@ -113,18 +121,13 @@ namespace UdemyETicaret.Controllers
                 }
                 else if (pro != null && pro.IsContinued == false)
                 {
-                    TempData["MyError"] = "Bu ürün artık satışta yok";
+                    TempData["MyError"] = "Bu ürünün satışı durduruldu.";
                 }
-                else if (pro != null && pro.UnitsInStock == 0)
-                {
-                    TempData["MyError"] = "Bu ürün stoklarda yok";
-                }
-
             }
             basket.RemoveAll(x => x.Count < 1);
             Session["Basket"] = basket;
 
-            return RedirectToAction("Index", "i");
+            return RedirectToAction("Basket", "i");
         }
 
         [HttpGet]
@@ -189,7 +192,7 @@ namespace UdemyETicaret.Controllers
                     orders = context.Orders.Where(x => x.Member_Id == currentId);
                 }
                 // EKLEME SONU 
-                
+
                 List<BuyModels> model = new List<BuyModels>();
                 foreach (var item in orders)
                 {
@@ -212,67 +215,63 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpPost]
+        [MyAuthorization]
         public ActionResult Buy(string Address)
         {
-            if (base.IsLogon())
+
+            try
             {
-                try
+                var basket = (List<i_BasketModels>)Session["Basket"];
+                var guid = new Guid(Address);
+                var _address = context.Addresses.FirstOrDefault(x => x.Id == guid);
+                //Sipariş Verildi = SV
+                //Ödeme bildirimi = OB
+                //Ödeme onaylandı = OO
+                var order = new DB.Orders()
                 {
-                    var basket = (List<i_BasketModels>)Session["Basket"];
-                    var guid = new Guid(Address);
-                    var _address = context.Addresses.FirstOrDefault(x => x.Id == guid);
-                    //Sipariş Verildi = SV
-                    //Ödeme bildirimi = OB
-                    //Ödeme onaylandı = OO
-                    var order = new DB.Orders()
+                    AddedDate = DateTime.Now,
+                    Address = _address.AdresDescription,
+                    Member_Id = CurrentUserId(),
+                    Status = "SV",
+                    Id = Guid.NewGuid()
+                };
+                foreach (i_BasketModels item in basket)
+                {
+                    var oDetail = new DB.OrderDetails();
+                    oDetail.AddedDate = DateTime.Now;
+                    oDetail.Price += item.Product.Price * item.Count;
+                    oDetail.Product_Id = item.Product.Id;
+                    oDetail.Quantity = item.Count;
+                    oDetail.Id = Guid.NewGuid();
+
+                    order.OrderDetails.Add(oDetail);
+
+                    var _product = context.Products.FirstOrDefault(x => x.Id == item.Product.Id);
+                    if (_product != null && _product.UnitsInStock >= item.Count)
                     {
-                        AddedDate = DateTime.Now,
-                        Address = _address.AdresDescription,
-                        Member_Id = CurrentUserId(),
-                        Status = "SV",
-                        Id = Guid.NewGuid()
-                    };
-                    foreach (i_BasketModels item in basket)
-                    {
-                        var oDetail = new DB.OrderDetails();
-                        oDetail.AddedDate = DateTime.Now;
-                        oDetail.Price += item.Product.Price * item.Count;
-                        oDetail.Product_Id = item.Product.Id;
-                        oDetail.Quantity = item.Count;
-                        oDetail.Id = Guid.NewGuid();
-
-                        order.OrderDetails.Add(oDetail);
-
-                        var _product = context.Products.FirstOrDefault(x => x.Id == item.Product.Id);
-                        if (_product != null && _product.UnitsInStock >= item.Count)
-                        {
-                            _product.UnitsInStock = _product.UnitsInStock - item.Count;
-                        }
-                        else
-                        {
-                            throw new Exception(string.Format("{0} ürünü için yeterli stok yoktur veya silinmiş bir ürünü almaya çalışıyorsunuz.", item.Product.Name));
-                        }
-
+                        _product.UnitsInStock = _product.UnitsInStock - item.Count;
                     }
-                    context.Orders.Add(order);
-                    context.SaveChanges();
-                    Session["Basket"] = null;
+                    else
+                    {
+                        throw new Exception(string.Format("{0} ürünü için yeterli stok yoktur veya silinmiş bir ürünü almaya çalışıyorsunuz.", item.Product.Name));
+                    }
+
                 }
-                catch (Exception ex)
-                {
-                    TempData["MyError"] = ex.Message;
-                }
-                return RedirectToAction("Buy", "i");
+                context.Orders.Add(order);
+                context.SaveChanges();
+                Session["Basket"] = null;
             }
-            else
+            catch (Exception ex)
             {
-                return RedirectToAction("Login", "Account");
+                TempData["MyError"] = ex.Message;
             }
+            return RedirectToAction("Buy", "i");
 
         }
 
         [HttpPost]
-        public JsonResult OrderNotif(OrderNotifModels model)
+        [MyAuthorization]
+        public JsonResult OrderNotification(OrderNotifModels model)
         {
             if (string.IsNullOrEmpty(model.OrderId) == false)
             {
@@ -288,24 +287,28 @@ namespace UdemyETicaret.Controllers
             return Json("");
         }
 
-        [HttpGet]      //Product Controller a taşıyabilirsin
+
+        [HttpPost]      //Product Controller a taşıyabilirsin
         public JsonResult GetProduct(int id)
         {
             var pro = context.Products.FirstOrDefault(x => x.Id == id);
             return Json(pro.Description, JsonRequestBehavior.AllowGet);
         }
-         
-        [HttpGet]      //Order controllerı açarsan taşıyabilirsin
+
+        [HttpGet]
         public JsonResult GetOrder(string id)
         {
             var guid = new Guid(id);
             var order = context.Orders.FirstOrDefault(x => x.Id == guid);
-
-            return Json(order.Description ,JsonRequestBehavior.AllowGet);
-
+            return Json(new
+            {
+                Description = order.Description,
+                Address = order.Address
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
+        [MyAuthorization]
         public JsonResult OrderComplete(string id, string text)
         {
             var guid = new Guid(id);

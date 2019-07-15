@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UdemyETicaret.Filter;
 using UdemyETicaret.Models.Message;
 
 namespace UdemyETicaret.Controllers
 {
+    [MyAuthorization]
     public class MessageController : BaseController
     {
 
@@ -108,6 +110,7 @@ namespace UdemyETicaret.Controllers
             return PartialView("_Message", model);
         }
 
+        [HttpGet]
         public ActionResult RemoveMessageReplies(string id)
         {
             var guid = new Guid(id);

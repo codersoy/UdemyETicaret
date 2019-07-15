@@ -4,29 +4,27 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UdemyETicaret.Filter;
 
 namespace UdemyETicaret.Controllers
 {
+    [MyAuthorization(_memberType: 8)]
     public class ProductController : BaseController
     {
         [HttpGet]
         public ActionResult Index()
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
-            else if (((int)(CurrentUser().MemberType)) < 4)
-            {
-                return RedirectToAction("Index", "i");
-            }
+            
             var products = context.Products.Where(x => x.isDeleted == false || x.isDeleted == null).ToList();
 
             //Eklenen ürünü en üstte göstermek için yaptık
-            return View(products.OrderByDescending(x=>x.AddedDate).ToList());
+            return View(products.OrderByDescending(x => x.AddedDate).ToList());
         }
-
+        
         [HttpGet]
         public ActionResult Edit(int id = 0)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+           
             var product = context.Products.FirstOrDefault(x => x.Id == id);
             var categories = context.Categories.Select(x => new SelectListItem()
             {
@@ -40,7 +38,7 @@ namespace UdemyETicaret.Controllers
         [HttpPost]
         public ActionResult Edit(DB.Products product)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+           
             var productImagePath = string.Empty;
 
             if (Request.Files != null && Request.Files.Count > 0)
@@ -92,7 +90,7 @@ namespace UdemyETicaret.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+           
             var pro = context.Products.FirstOrDefault(x => x.Id == id);
             pro.isDeleted = true;
             context.SaveChanges();

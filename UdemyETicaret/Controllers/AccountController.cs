@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using UdemyETicaret.DB;
+using UdemyETicaret.Filter;
 using UdemyETicaret.Models.Account;
 
 namespace UdemyETicaret.Controllers
@@ -111,6 +112,7 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpGet]
+        [MyAuthorization]
         public ActionResult ProfileEdit()
         {
             int id = base.CurrentUserId();
@@ -127,6 +129,7 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpPost]
+        [MyAuthorization]
         public ActionResult ProfileEdit(ProfileModels model)
         {
             try
@@ -172,6 +175,7 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpPost]
+        [MyAuthorization]
         public ActionResult Address(DB.Addresses address, string Cancel)
         {
             if (!string.IsNullOrEmpty(Cancel))
@@ -198,6 +202,7 @@ namespace UdemyETicaret.Controllers
         }
 
         [HttpGet]
+        [MyAuthorization]
         public ActionResult RemoveAddress(string id)
         {
             var guid = new Guid(id);

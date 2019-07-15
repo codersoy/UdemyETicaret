@@ -3,19 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UdemyETicaret.Filter;
 
 namespace UdemyETicaret.Controllers
 {
+    [MyAuthorization(_memberType: 8)]
     public class CategoryController : BaseController
     {
         [HttpGet]
         public ActionResult Index()
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
-            else if (((int)(CurrentUser().MemberType)) < 4)
-            {
-                return RedirectToAction("Index", "i");
-            }
+           
             var cats = context.Categories.Where(x => x.isDeleted == false || x.isDeleted == null).ToList();
 
             //Eklenen ürünü en üstte göstermek için yaptık
@@ -25,7 +23,7 @@ namespace UdemyETicaret.Controllers
         [HttpGet]
         public ActionResult Edit(int id = 0)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+           
             var category = context.Categories.FirstOrDefault(x => x.Id == id);
             var categories = context.Categories.Select(x => new SelectListItem()
             {
@@ -45,7 +43,7 @@ namespace UdemyETicaret.Controllers
         [HttpPost]
         public ActionResult Edit(DB.Categories category)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+            
             //Var olan kategoriyi güncellemek için
             if (category.Id > 0)
             {
@@ -78,7 +76,7 @@ namespace UdemyETicaret.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
-            if (IsLogon() == false) return RedirectToAction("Index", "i");
+           
             var cat = context.Categories.FirstOrDefault(x => x.Id == id);
             cat.isDeleted = true;
             context.SaveChanges();

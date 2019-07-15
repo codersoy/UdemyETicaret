@@ -16,6 +16,7 @@ namespace UdemyETicaret.Controllers
             context = new UdemyETicaretDBEntities1();
             ViewBag.MenuCategories = context.Categories.Where(x => x.Parent_Id == null).ToList();
         }
+
         protected DB.Members CurrentUser()
         {
             if (Session["LogOnUser"] == null)
@@ -24,6 +25,7 @@ namespace UdemyETicaret.Controllers
             }
             return (DB.Members)Session["LogOnUser"];
         }
+
         protected int CurrentUserId()
         {
             if (Session["LogOnUser"] == null)
@@ -45,5 +47,23 @@ namespace UdemyETicaret.Controllers
             }
         }
 
+        /// <summary>
+        /// tüm alt kategorileri getir
+        /// </summary>
+        /// <param name="cat">Hangi kategorinin alt kategorilerini getirsin</param>
+        /// <returns></returns>
+        protected List<Categories> GetChildCategories(Categories cat)
+        {
+            var result = new List<Categories>();
+
+            result.AddRange(cat.Categories1);
+            foreach (var item in cat.Categories1)
+            {
+                var list = GetChildCategories(item);
+                result.AddRange(list);
+            }
+
+            return result;
+        }
     }
 }

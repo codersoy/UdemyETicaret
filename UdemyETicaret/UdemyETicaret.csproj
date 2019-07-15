@@ -138,6 +138,8 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="images\200x200.png" />
+    <Content Include="images\300x150.png" />
     <Content Include="images\AccountIcon2.png" />
     <Content Include="images\defaultImage.png" />
     <Content Include="images\upload\mertFOTO.jpg" />
@@ -229,6 +231,7 @@
     <Compile Include="DB\Products.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Filter\MyAuthorizationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

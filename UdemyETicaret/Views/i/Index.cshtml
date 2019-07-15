@@ -64,7 +64,6 @@
     </div>
 </div>
 <script>
-
     function GetProductInfo(Id) {
         $("#productinfo").modal("show");
         $.ajax({
@@ -73,15 +72,14 @@
             async: true,
             success: function (data) {
                 $("#modalBodyP").text(data);
-                var newHref = $('#modelBasketHref').attr("href");
+                var newHref = $("#modelBasketHref").attr("href");
                 newHref = newHref.replace("/Id", "/" + Id);
-                $('#modelBasketHref').attr("href", newHref);
+                $("#modelBasketHref").attr("href", newHref);
             },
             error: function (err) {
-                conso.log("GetProduct error", err);
+                console.log("GetProduct error", err);
                 $("#productinfo").modal("hide");
             }
-        })
+        });
     }
-
 </script>

@@ -1,6 +1,6 @@
 ﻿@{
     UdemyETicaret.DB.Members LogOnUser = (UdemyETicaret.DB.Members)Session["LogOnUser"];
-    
+
 }
 
 <!DOCTYPE html>
@@ -11,8 +11,8 @@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
-    <link href="~/Content/Site.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <link href="~/Content/Site.css" rel="stylesheet" />
     <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
@@ -27,7 +27,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="@Url.Action("Index", "i")">Ana Sayfa</a>
+                <a class="navbar-brand" href="@Url.Action("Index", "i",new { id = (int?)null })">Ana Sayfa</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="menulist">
@@ -96,8 +96,8 @@
                             </a>
                         </li>
 
-                        @Html.Action("RenderMessage","Message")
-                        
+                        @Html.Action("RenderMessage", "Message")
+
                         <li>
                             <a href="@Url.Action("Logout","Account")">
                                 <span class="glyphicon glyphicon-log-out"></span>&nbsp;Çıkış

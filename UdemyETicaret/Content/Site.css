@@ -90,3 +90,8 @@ textarea {
             border-radius: 6px 0 6px 6px;
         }
 
+.ProductNameStyle {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
