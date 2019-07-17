@@ -68,7 +68,7 @@
         $("#productinfo").modal("show");
         $.ajax({
             url: "/i/GetProduct/" + Id,
-            method: "GET",
+            method: "POST",
             async: true,
             success: function (data) {
                 $("#modalBodyP").text(data);
